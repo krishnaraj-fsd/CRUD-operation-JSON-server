@@ -124,56 +124,101 @@ const UsersPage = () => {
             {loading ? (
                 <div className="text-center py-10 animate-pulse text-gray-500">Loading users...</div>
             ) : (
-                <div className="bg-white shadow-md rounded-lg overflow-hidden animate-fade-up animate-duration-500">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                {userSchema.map((field) => (
-                                    <th
-                                        key={field.name}
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        {field.label}
-                                    </th>
-                                ))}
-                                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                            {users.map((user) => (
-                                <tr key={user.id} className="hover:bg-gray-50 transition-colors">
+                <div className="animate-fade-up animate-duration-500">
+                    {/* Desktop View: Table */}
+                    <div className="hidden md:block bg-white shadow-md rounded-lg overflow-hidden mb-16">
+                        <table className="min-w-full divide-y divide-gray-200">
+                            <thead className="bg-gray-50">
+                                <tr>
                                     {userSchema.map((field) => (
-                                        <td key={field.name} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                            {user[field.name]}
-                                        </td>
+                                        <th
+                                            key={field.name}
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >
+                                            {field.label}
+                                        </th>
                                     ))}
-                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {users.map((user) => (
+                                    <tr key={user.id} className="hover:bg-gray-50 transition-colors">
+                                        {userSchema.map((field) => (
+                                            <td key={field.name} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                {user[field.name]}
+                                            </td>
+                                        ))}
+                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <button
+                                                onClick={() => handleEditUser(user)}
+                                                className="text-indigo-600 hover:text-indigo-900 mr-4 cursor-pointer hover:scale-110 transition-transform"
+                                            >
+                                                <Pencil size={18} />
+                                            </button>
+                                            <button
+                                                onClick={() => handleDeleteUser(user.id)}
+                                                className="text-red-600 hover:text-red-900 cursor-pointer hover:scale-110 transition-transform"
+                                            >
+                                                <Trash2 size={18} />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                                {users.length === 0 && (
+                                    <tr>
+                                        <td colSpan={userSchema.length + 1} className="px-6 py-10 text-center text-gray-500">
+                                            No users found. Click "Add User" to create one.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {/* Mobile View: Cards */}
+                    <div className="md:hidden grid grid-cols-1 gap-4 mb-24">
+                        {users.map((user) => (
+                            <div key={user.id} className="bg-white p-4 rounded-lg shadow-md border-l-4 border-blue-500 animate-fade-up">
+                                <div className="flex justify-between items-start mb-2">
+                                    <div>
+                                        <h3 className="text-lg font-bold text-gray-900">{user.firstName} {user.lastName}</h3>
+                                        <p className="text-sm text-gray-500">{user.email}</p>
+                                    </div>
+                                    <div className="flex space-x-2">
                                         <button
                                             onClick={() => handleEditUser(user)}
-                                            className="text-indigo-600 hover:text-indigo-900 mr-4 cursor-pointer hover:scale-110 transition-transform"
+                                            className="p-2 text-indigo-600 bg-indigo-50 rounded-full hover:bg-indigo-100 transition-colors"
                                         >
-                                            <Pencil size={18} />
+                                            <Pencil size={16} />
                                         </button>
                                         <button
                                             onClick={() => handleDeleteUser(user.id)}
-                                            className="text-red-600 hover:text-red-900 cursor-pointer hover:scale-110 transition-transform"
+                                            className="p-2 text-red-600 bg-red-50 rounded-full hover:bg-red-100 transition-colors"
                                         >
-                                            <Trash2 size={18} />
+                                            <Trash2 size={16} />
                                         </button>
-                                    </td>
-                                </tr>
-                            ))}
-                            {users.length === 0 && (
-                                <tr>
-                                    <td colSpan={userSchema.length + 1} className="px-6 py-10 text-center text-gray-500">
-                                        No users found. Click "Add User" to create one.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+                                    </div>
+                                </div>
+                                <div className="space-y-1 text-sm text-gray-700">
+                                    {userSchema.filter(f => !['firstName', 'lastName', 'email'].includes(f.name)).map(field => (
+                                        <div key={field.name} className="flex justify-between">
+                                            <span className="font-medium text-gray-500">{field.label}:</span>
+                                            <span>{user[field.name]}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                        {users.length === 0 && (
+                            <div className="text-center py-10 text-gray-500 bg-white rounded-lg shadow-sm">
+                                <p>No users found.</p>
+                                <p className="text-sm">Click "Add User" to create one.</p>
+                            </div>
+                        )}
+                    </div>
                 </div>
             )}
 
