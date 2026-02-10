@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 export const API_BASE_URL = () => {
-    // return 'https://backendtest-h9eq.onrender.com'
-    return 'http://localhost:5000'
+    return 'https://crud-operation-json-server.onrender.com'
+    // return 'http://localhost:5000'
 }
 
 export const getUsers = async () => {
