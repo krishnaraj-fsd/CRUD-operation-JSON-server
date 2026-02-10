@@ -9,7 +9,16 @@ const middlewares = jsonServer.defaults();
 
 const PORT = 5000;
 
-server.use(cors());
+server.use(
+    cors({
+        origin: [
+            // "http://localhost:5273",
+            "https://crud-operations-self-eight.vercel.app",
+        ],
+        credentials: true,
+    })
+);
+
 server.use(express.json());
 server.use(middlewares);
 
