@@ -5,7 +5,7 @@ const path = require('path');
 
 const server = express();
 const router = jsonServer.router(path.join(__dirname, 'db.json'));
-const middlewares = jsonServer.defaults();
+const middlewares = jsonServer.defaults({ cors: false });
 
 const PORT = 5000;
 
@@ -21,9 +21,6 @@ server.use(
 
 server.use(express.json());
 server.use(middlewares);
-
-// Custom routes if needed (e.g., extend data model)
-
 server.use(router);
 
 server.listen(PORT, () => {
