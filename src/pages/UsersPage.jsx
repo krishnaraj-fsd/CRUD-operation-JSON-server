@@ -121,7 +121,7 @@ const UsersPage = () => {
                 </button>
             </header>
 
-            {!loading ? (
+            {loading ? (
                 <div className="flex justify-center py-20">
                     <div className="glass-card px-10 py-8 rounded-2xl flex flex-col items-center">
                         <div className="w-10 h-10 border-4 border-gray-600 border-t-white rounded-full animate-spin"></div>
