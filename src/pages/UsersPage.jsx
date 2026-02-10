@@ -121,8 +121,13 @@ const UsersPage = () => {
                 </button>
             </header>
 
-            {loading ? (
-                <div className="text-center py-10 animate-pulse text-gray-500">Loading users...</div>
+            {!loading ? (
+                <div className="flex justify-center py-20">
+                    <div className="glass-card px-10 py-8 rounded-2xl flex flex-col items-center">
+                        <div className="w-10 h-10 border-4 border-gray-600 border-t-white rounded-full animate-spin"></div>
+                        <p className="mt-4 text-gray-600 text-sm font-medium">Loading users...</p>
+                    </div>
+                </div>
             ) : (
                 <div className="animate-fade-up animate-duration-500">
                     {/* Desktop View: Table */}
